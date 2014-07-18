@@ -1,10 +1,4 @@
-<?php session_start()?>
-
-<?php if($_SESSION['entrou']):?>
-
-<?php require_once 'menu.php'; ?>
-
-<form class="form-horizontal" action="resultado.php" method="post">
+<form class="form-horizontal" action="resultado" method="post">
    <legend>Preencha o formul&aacute;rio</legend>
    <div class="control-group">
       <label class="control-label" >Nome</label>
@@ -31,11 +25,3 @@
    </div>
 
 </form>
-
-<?php require_once 'footer.php'; ?>
-
-<?php else:?>
-<h3>Voc&ecirc; n&atilde;o tem autoriza&ccedil;&atilde;o para visualizar esta p&aacute;gina!</h3>
-<?php endif; ?>
-
-
