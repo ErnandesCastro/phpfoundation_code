@@ -5,9 +5,10 @@ $senha = "senha";
 
 if ($usuario == "usuario" and $senha == "senha") {
    $_SESSION['entrou'] = true;
-} 
+}
 ?>
 <?php require_once 'menu.php';   ?>
+<?php require_once 'content.php';?>
 <?php require_once 'footer.php'; ?>
 
 <?php if($_SESSION['entrou'] != TRUE) {?>

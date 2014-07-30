@@ -7,7 +7,7 @@ ini_set("error_reporting", E_ALL | E_NOTICE);
 
 function conexao() {
    try {
-      $conectar = new PDO("mysql:host=127.0.0.1:3306;dbname=curso", "root", "");
+      $conectar = new PDO("mysql:host=127.0.0.1;dbname=curso", "root", "159753");
       $conectar->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $conectar;
    } catch (PDOException $exc) {
@@ -48,7 +48,4 @@ function conteudo() {
 function exibeConteudo() {
    $rotaSite = pegandoRota();
    $conteudos = conteudo();
-   if ($rotaSite == $conteudos['nome']) {
-      return "<p>" . $conteudos['conteudo'] . "</p>";
-   }
 }

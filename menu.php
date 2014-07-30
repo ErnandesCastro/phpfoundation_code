@@ -14,7 +14,6 @@ include 'function.php';
 $rotaSite = pegandoRota();
 $conteudos = conteudo();
 
-print_r($rotaSite);
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -25,8 +24,8 @@ print_r($rotaSite);
       <!--<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.css.css">-->
       <!--<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css.css">-->
       <script type="text/javascript">
-         exibeConteudo(conteudo){
-            alert(conteudo);
+         function exibeConteudo(conteudo){
+            document.getElementById("content").innerHTML =conteudo;
          }
       </script>
    </head>
@@ -38,7 +37,7 @@ print_r($rotaSite);
 
                <?php
                foreach ($conteudos as $valor) {
-                  echo "<li><span onClick='exibeConteudo(" . $valor['conteudo'] . ")" . "'>" . $valor['nome'] . "</span></li>";
+                  echo "<li><a onClick=\"exibeConteudo('".$valor['conteudo']."')\">" . $valor['nome'] . "</a></li>";
                }
                ?>
             </ul>
