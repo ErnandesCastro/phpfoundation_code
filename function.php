@@ -7,7 +7,7 @@ ini_set("error_reporting", E_ALL | E_NOTICE);
 
 function conexao() {
    try {
-      $conectar = new PDO("mysql:host=127.0.0.1;dbname=curso", "root", "159753");
+      $conectar = new PDO("mysql:host=127.0.0.1:3306;dbname=curso", "root", "");
       $conectar->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $conectar;
    } catch (PDOException $exc) {
@@ -18,13 +18,14 @@ function conexao() {
 //Rotas do menu
 
 function rotas($param) {
-   $rotaSite = ["home", "empresa", "produtos", "servicos", "contato", "resultado"];
-   if (in_array($param[1], $rotaSite)) {
-      return require_once $param[1] . '.php';
-   } elseif (isset($param[1]) == ' ') {
-      return require_once 'home.php';
-   } else {
-      return "404.php";
+   foreach ($param as $menuValor) {
+      if ($menuValor == 'Contato') {
+         return require_once 'contato.php';
+      } elseif ($menuValor != 'Contato') {
+         return conteudo();
+      } else {
+         return require_once "404.php";
+      }
    }
 }
 
@@ -45,7 +46,29 @@ function conteudo() {
    return $arrayConteudo;
 }
 
-function exibeConteudo() {
-   $rotaSite = pegandoRota();
-   $conteudos = conteudo();
+//function exibeConteudo() {
+//$rotaSite = pegandoRota();
+//   $conteudos = conteudo();
+//}
+
+
+function pesquisar($palavra) {
+
+   $conecta = conexao();
+   $palavra = trim($_POST['pesquisa']);
+   try {
+
+      $busca = "SELECT conteudo FROM conteudo WHERE conteudo LIKE '%:palavra%'";
+      $stmt = $conecta->prepare();
+      $stmt->bindValue("palavra", $palavra);
+      $stmt->execute();
+
+      $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      echo $resultado;
+      
+   } catch (Exception $ex) {
+      die("Nenhum resultado para a pesquisa: " . $palavra . ".");
+   }
+   
 }
