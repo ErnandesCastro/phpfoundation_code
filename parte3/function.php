@@ -15,26 +15,22 @@ function conexao() {
    }
 }
 
-//Rotas do menu
-
-function rotas($param) {
-   foreach ($param as $menuValor) {
-      if ($menuValor == 'Contato') {
-         return require_once 'contato.php';
-      } elseif ($menuValor != 'Contato') {
-         return conteudo();
-      } else {
-         return require_once "404.php";
-      }
-   }
-}
-
 function pegandoRota() {
    $url = parse_url("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
    $rota = \explode("/", $url['path'], 2);
 
-   return $rota;
+   $pegandoRota = conteudo();
+
+   if (empty($rota)) {
+      require_once 'index.php';
+   } elseif (isset($rota) && in_array($rota, $pegandoRota) != $pegandoRota) {
+      require_once '404.php';
+   } elseif ($rota == 'contato') {
+      require_once 'contato.php';
+   } elseif($rota == 'pesquisa'){
+      require_once 'pesquisar.php';
+   }
 }
 
 function conteudo() {
@@ -46,12 +42,6 @@ function conteudo() {
    return $arrayConteudo;
 }
 
-//function exibeConteudo() {
-//$rotaSite = pegandoRota();
-//   $conteudos = conteudo();
-//}
-
-
 function pesquisar($palavra) {
 
    $conecta = conexao();
@@ -59,16 +49,14 @@ function pesquisar($palavra) {
    try {
 
       $busca = "SELECT conteudo FROM conteudo WHERE conteudo LIKE '%:palavra%'";
-      $stmt = $conecta->prepare();
-      $stmt->bindValue("palavra", $palavra);
+      $stmt = $conecta->prepare($busca);
+      $stmt->bindValue(":palavra", $palavra);
       $stmt->execute();
 
       $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       echo $resultado;
-      
-   } catch (Exception $ex) {
+   } catch (PDOException $ex) {
       die("Nenhum resultado para a pesquisa: " . $palavra . ".");
    }
-   
 }

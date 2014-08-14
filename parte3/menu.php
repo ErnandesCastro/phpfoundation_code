@@ -35,8 +35,8 @@ $conteudos = conteudo();
 //                     echo "<li><a onClick=\"exibeConteudo('" . $valor['conteudo'] . "')\">" . $valor['nome'] . "</a></li>";
 //                     require_once 'contato.php';
 //                  } else {
-                  echo "<li><a onClick=\"exibeConteudo('" . $valor['conteudo'] . "')\">" . $valor['nome'] . "</a></li>";
-                  //echo "<li><a exibeConteudo('" . $valor['conteudo'] . "')>" . $valor['nome'] . "</a></li>";
+                  //echo "<li><a onClick=\"exibeConteudo('" . $valor['conteudo'] . "')\">" . $valor['nome'] . "</a></li>";
+                  echo "<li><a " . $valor['nome'] . " > " . $valor['nome'] . "</a></li>";
 //                  }
                }
 //               }
