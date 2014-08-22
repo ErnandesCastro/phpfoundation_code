@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="resultado" method="post">
+<form class="form-horizontal" action="resultado.php" method="post">
    <legend>Preencha o formul&aacute;rio</legend>
    <div class="control-group">
       <label class="control-label" >Nome</label>

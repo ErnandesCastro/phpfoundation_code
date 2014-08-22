@@ -18,44 +18,42 @@ function conexao() {
 function pegandoRota() {
    $url = parse_url("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
-   $rota = \explode("/", $url['path'], 2);
+   return \explode("/", $url['path'], 2);
+   
+   
 
-   $pegandoRota = conteudo();
-
-   if (empty($rota)) {
-      require_once 'index.php';
-   } elseif (isset($rota) && in_array($rota, $pegandoRota) != $pegandoRota) {
-      require_once '404.php';
-   } elseif ($rota == 'contato') {
-      require_once 'contato.php';
-   } elseif($rota == 'pesquisa'){
-      require_once 'pesquisar.php';
-   }
+//   $pegandoRota = conteudo();
+//
+//   if (empty($rota)) {
+//      require_once 'index.php';
+//   } elseif (isset($rota) && in_array($rota, $pegandoRota) != $pegandoRota) {
+//      require_once '404.php';
+//   } elseif ($rota == 'contato') {
+//      require_once 'contato.php';
+//   } elseif($rota == 'pesquisa'){
+//      require_once 'pesquisar.php';
+//   }
 }
 
 function conteudo() {
    $open = conexao();
-   $conteudo = "SELECT nome, conteudo FROM conteudo;";
+   $conteudo = "SELECT nome, conteudo, url FROM conteudo;";
    $pegaConteudo = $open->prepare($conteudo);
    $pegaConteudo->execute();
-   $arrayConteudo = $pegaConteudo->fetchAll(PDO::FETCH_ASSOC);
-   return $arrayConteudo;
+   return $pegaConteudo->fetchAll(PDO::FETCH_ASSOC); 
 }
 
 function pesquisar($palavra) {
 
-   $conecta = conexao();
-   $palavra = trim($_POST['pesquisa']);
    try {
 
-      $busca = "SELECT conteudo FROM conteudo WHERE conteudo LIKE '%:palavra%'";
-      $stmt = $conecta->prepare($busca);
-      $stmt->bindValue(":palavra", $palavra);
+      $busca = "SELECT conteudo FROM conteudo WHERE conteudo LIKE :palavra";
+      $stmt = conexao()->prepare($busca);
+      $stmt->bindValue("palavra", "%".trim($palavra)."%");
       $stmt->execute();
 
-      $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      echo $resultado;
    } catch (PDOException $ex) {
       die("Nenhum resultado para a pesquisa: " . $palavra . ".");
    }
